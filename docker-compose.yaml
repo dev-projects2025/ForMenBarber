@@ -1,0 +1,59 @@
+version: '3.9'
+
+services:
+  minio:
+    image: quay.io/minio/minio:latest
+    container_name: dl_minio
+    depends_on:
+      - postgres
+    restart: always
+    environment:
+      MINIO_ROOT_USER: ${MINIO_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_PWD}
+    ports:
+      - "9000:9000"   # API S3
+      - "9090:9090"   # Consola web
+    volumes:
+      - ${MINIO_VOL_OBJECTS}:/data            # Volumen para los objetos
+      - ${MINIO_VOL_CONFIG}:/root/.minio      # Volumen para configuración
+    command: server /data --console-address ":9090"
+    networks:
+      - DL_NET
+
+  postgres:
+    image: postgres:15.1
+    container_name: rdb_postgres
+    restart: always
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PWD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - ${DB_VOL}:/var/lib/postgresql/data
+    networks:
+      - DWH_NET
+      - DL_NET
+
+  pgAdmin:
+    depends_on:
+      - postgres
+    image: dpage/pgadmin4:6.17
+    container_name: cdb_pgadmin
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_USER}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PWD}
+    ports:
+      - "8080:80"
+    volumes:
+      - ${PGADMIN_VOL}:/var/lib/pgadmin
+    networks:
+      - DWH_NET
+
+networks:
+  DWH_NET:
+    driver: bridge
+  DL_NET:
+    driver: bridge

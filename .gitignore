@@ -1,0 +1,6 @@
+.env
+MinIO/
+pgadmin/
+Postgres/
+logs/
+ManBarberShop/
