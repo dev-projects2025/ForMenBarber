@@ -8,7 +8,7 @@ Nuestro proyecto esta enfocado en implementar un flujo de ETL para consolidar y 
 
 ---
 
-## 🌍 CONTEXTO DE LA EMPRESA
+## 🌍 Información de la Empresa
 
 - 💇‍♂️**Nombre de la Barbería:** For men Barber Shop
 - 🛍️**Ubicación:** Centro comercial Cañaveralejo
@@ -22,13 +22,48 @@ Nuestro proyecto esta enfocado en implementar un flujo de ETL para consolidar y 
 
 ```plaintext
 ETL_FormenBarbershop/
-├── etl/           # Código Python por etapa
-│   ├── extract.py
-│   ├── transform.py
-│   └── load.py
-├── config/            # Parámetros de conexión y rutas
-├── logs/              # Registro de ejecución
-└── README.md          # Documentación del proyecto
+├── etl/ # Módulo principal ETL
+│ ├── extract/ # Scripts de extracción de datos
+│ │ ├── collaborators_extract.py
+│ │ ├── customers_extract.py
+│ │ ├── item_extract.py
+│ │ └── sales_extract.py
+│ │
+│ ├── load/ # Scripts de carga de datos
+│ │ ├── collaborators_load.py
+│ │ ├── customers_load.py
+│ │ ├── item_load.py
+│ │ └── sales_load.py
+│ │
+│ ├── transform/ # Scripts de transformación de datos
+│ │ ├── collaborators_transform.py
+│ │ ├── customers_transform.py
+│ │ ├── item_transform.py
+│ │ └── sales_transform.py
+│ │
+│ └── utils/ # Utilidades y configuración
+│ ├── config/ # Configuración general
+│ │ ├── config.py
+│ │ └── init.py
+│ │
+│ ├── constants.py # Constantes globales
+│ ├── helpers.py # Funciones auxiliares
+│ ├── logger.py # Configuración de logs
+│ ├── minio_connection.py # Conexión a MinIO
+│ ├── populate_DL.py # Poblar Data Lake
+│ ├── postgres_connection.py# Conexión a PostgreSQL
+│ └── init.py
+│
+├── logs/ # Archivos de logs de ejecución
+│
+├── Scripts/ # Scripts auxiliares
+│ └── Script.sql # Script SQL para base de datos
+│
+├── .env # Variables de entorno
+├── .gitignore # Reglas de exclusión para Git
+├── docker-compose.yaml # Orquestación de contenedores
+├── main.py # Script principal de ejecución
+└── requirements.txt # Dependencias del proyecto
 ```
 
 ---
@@ -46,14 +81,14 @@ Antes de ejecutar el proyecto, asegúrate de tener instaladas las siguientes her
   - python-dotenv==1.1.1
      
 - 🐳 **Docker** – Para levantar contenedores de servicios en PostgreSQL, PgAdmin y MinIO.
-- 📦 **MinIO** – Almacenamiento tipo S3 para el Data Lake.
-- 🛢️ **PostgreSQL** – Base de datos relacional para la carga final.
+- 📦 **MinIO** – Almacenamiento tipo S3 para el Data Lake (Se levanta en contenedor Docker).
+- 🛢️ **PostgreSQL** – Base de datos relacional para la carga final (Se levanta en contenedor Docker).
+- 🤝 **PgAdmin** - Para administrar la base de datos (Se levanta en contenedor Docker).
 - 💾 **Google Drive (modo escritorio)** – Para acceder a los archivos xlsx sincronizados localmente.
 - 📊 **Power BI** – Para visualización de los datos cargados.
-- 🤝 **PgAdmin** - Para administrar la base de datos.
 - ⌨️ **Visual Estudio Code** - Para usar como editor de código.
    
-- Crear el archivo .env y definir las siguientes variables:
+- Crear el archivo .env en la raiz del proyecto y definir las siguientes variables:
   - DB_NAME
   - DB_USER
   - DB_PWD
@@ -67,7 +102,16 @@ Antes de ejecutar el proyecto, asegúrate de tener instaladas las siguientes her
   - MINIO_VOL_OBJECTS
 ---
 
-## 🐳 Levantar el Contenedor de Base de Datos
+## 🐳 Levantar los contenedores: MinIO, Postgres y Pgadmin
+
+Definir las variables de entorno en el archivo .env:
+
+🔐 **Variables de entorno MinIO:** Definir las variables de entorno MINIO_USER, MINIO_PWD, MINIO_VOL_CONFIG, MINIO_VOL_OBJECTS
+
+🔐 **Variables de entorno Postgres:** Definir las variables de entorno DB_NAME, DB_USER, DB_PWD, DB_VOL
+
+🔐 **Variables de entorno Postgres:** Definir las variables de entorno PGADMIN_USER, PGADMIN_PWD, PGADMIN_VOL
+
 
 En la raíz del proyecto, ejecutar:
 
@@ -75,81 +119,73 @@ En la raíz del proyecto, ejecutar:
 docker-compose up -d
 ```
 
-🌐 Esto iniciará un contenedor con PostgreSQL en el puerto `5432`.
-
-🔐 **Credenciales de conexión:**
-
-- Host: `localhost`  
-- Port: `5432`  
-- Database: `bd`  
-- User: `arq`  
-- Password: `password`
-
 ---
 ## 📗 Configurar el Google Drive Desktop
 
-En la raíz del pc, ejecutar el instalador del Drive:
+Descargar Google Drive desktop desde el siguiente enlace:
 
 ```bash
 https://support.google.com/a/users/answer/13022292?hl=es
 ```
 ---
 
-## 🗄️ Proceso de Insert
+## 🗄️ Ubicar los archivos dentro de una unidad compartida del drive
 
-En la unidad compartida del Drive se encuentran los archivos en formato CSV.  
-Por medio de Python se aplicó la conexión con MinIO para insertar los datos en un Data Lake.  
-El nombre del folder es **Raw**, donde diariamente se depositará el dataset.
+Los archivos a cargar son los siguientes:
 
----
+1. **Clientes:** clientes_FMB.xlsx
+2. **Colaboradores:** Reporte_Colaboradores.xlsx
+3. **Productos y servicios:** reporte_general_Agosto.xlsx
+4. **Ventas:** transacciones.xlsx
 
-## 🔥 Proceso de ETL
+Los archivos deben de estar localizados en una carpeta nombrada de la siguiente manera DDMMYYYY. El proceso de ETL buscará únicamente los archivos dentro de la carpeta del día actual.
 
-### 1. Extracción (`extract.py`)
-- Fuente: Drive local (CSV o Excel)
-- Herramienta: `pandas`
-- Salida: `data/raw_data.csv`
-
-```python
-import pandas as pd
-ruta = r"G:\Unidades compartidas\ManBarberShop\29092025\Reporte_Colaboradores.xlsx"
-df = pd.read_excel(ruta)
-df.to_csv("data/raw_data.csv", index=False)
-```
+Una vez definida la ruta principal de los archivos, se debe de tomar esa ruta y cambiar la constante FILES_PATH en el archivo elt.utils.constants.py
 
 ---
 
-### 2. Transformación (`transform.py`)
-- Limpieza de filas vacías y totales
-- Normalización de nombres de columnas
-- Conversión de tipos
+## 🗄️ Crear el modelo de DWH en la base de datos
 
-```python
-df = pd.read_csv("data/raw_data.csv")
-df = df[~df["Producto"].str.upper().isin(["TOTAL", ""])]
-df.columns = df.columns.str.strip().str.lower().str.replace(" ", "_")
-df.to_csv("data/clean_data.csv", index=False)
-```
+Usando pgadmin, ejecutar el script /Scripts/Script.sql. Esto creará el modelo que soportará el DHW.
 
----
+## 📊 Modelo de Datos
 
-### 3. Carga (`load.py`)
-- Destino: PostgreSQL
-- Herramienta: `sqlalchemy` + `psycopg2`
+### **Customer**
+- `idCustomer` (PK)
+- `creation_date`
+- `customer_name`
+- `email`
+- `referral_source`
 
-```python
-from sqlalchemy import create_engine
-df = pd.read_csv("data/clean_data.csv")
-engine = create_engine("postgresql+psycopg2://arq:password@localhost:5432/bd")
-df.to_sql("stg1_principal", engine, if_exists="replace", index=False)
-```
+### **Item**
+- `idItem` (PK)
+- `item_name`
+- `item_type`
+- `price`
+
+### **Collaborator**
+- `idCollaborator` (PK)
+- `name`
+
+### **Sales**
+- `idSale` (PK)
+- `idItem` (FK) → Item.idItem
+- `idCustomer` (FK) → Customer.idCustomer
+- `idCollaborator` (FK) → Collaborator.idCollaborator
+- `payment_type`
+- `sale_date`
+- `quantity`
+- `total_amount`
+
+  
+
+<img width="557" height="585" alt="ERD_Barbershop" src="https://github.com/user-attachments/assets/98808afd-3911-48f6-95ae-fb9550ce9da2" />
 
 ---
 
 ## 📈 Resultados esperados
 
-- Power BI conectado a PostgreSQL  
-- Dashboards con métricas de:
+<img width="975" height="731" alt="ForMenBarberShop" src="https://github.com/user-attachments/assets/4e9ed340-d3df-4d4a-9242-a9279c8d5b79" />
 
 ---
 
@@ -159,7 +195,16 @@ df.to_sql("stg1_principal", engine, if_exists="replace", index=False)
 | Incrementar la ocupación en días de baja demanda| Frecuencia de servicios por Barbero =(Número de servicios realizados)/(Número de barberos x Número de días de servicio)| Permite medir el nivel de ocupación que tiene cada barbero en promedio por cada día laborado. De esta manera, el propietario puede planificar cuantos turnos puede asignar máximos en un día y contemplar la capacidad operativa, exceso de personal o ineficiencia operativa|
 | Mejorar el desempeño individual de cada barbero   | Promedio de atención de servicios Fórmula:(Número de servicios realizados /Número de servicios programados) | Esta formula brinda un panorama del cumplimiento de los servicios realizados vs los planificados. Por lo tanto, si encontramos un valor por encima de 1, se puede concluir como negativo, por qué no se está cumpliendo con la meta esperada por alguna de estas razones: ausencias, citas canceladas o incapacidad operativa. De lo contrario, si encontramos un valor inferior a 1, se percibe que durante la operación, existen servicios que se están realizando sin contar con una programación o cita previa |
 
-- Meter una imagen del BI
+
+<img width="961" height="537" alt="Main_View" src="https://github.com/user-attachments/assets/ff51cff3-7785-48cb-b7a6-31a3a15fa93a" />
+
+
+<img width="947" height="534" alt="Barberos_clientes_View" src="https://github.com/user-attachments/assets/95dd0c32-d895-4d5f-89d8-540809d655c6" />
+
+
+<img width="944" height="535" alt="Items_Medios_pago_View" src="https://github.com/user-attachments/assets/5e81ea69-0807-452e-9e62-7880b69d8640" />
+
+
 ---
 
 ## 🛡️ Control de Cambios
@@ -173,9 +218,16 @@ df.to_sql("stg1_principal", engine, if_exists="replace", index=False)
 
 ## 👤 Autores
 
-**BRAYAN STEVEN MAYOR**
-**VICTOR JAVIER BUITRAGO VELASCO**
+**Clarificador(es):** Andres Felipe Hernandez
+
+**Ideador(es):** Brayan Steven Mayor
+
+**Implementador(es):** Anderson Gallego - Victor Buitrago
+
+**Desarrollador(es):** Juan Camilo Caicedo
+
 **CEO Asociación de Brayans de Colombia**
+
 #Apasionados por la estadística aplicada, visualización efectiva y automatización de procesos analíticos.
 
 ---
