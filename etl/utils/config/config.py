@@ -10,6 +10,7 @@ class Settings:
     DB_USER = os.getenv('DB_USER')
     DB_PWD = os.getenv('DB_PWD')
     DB_VOL = os.getenv('DB_VOL')
+    DB_ENDPOINT = os.getenv('DB_ENDPOINT') #"localhost"
 
     # Pgadmin configuration
     PGADMIN_USER = os.getenv('PGADMIN_USER')
@@ -21,4 +22,6 @@ class Settings:
     MINIO_PWD = os.getenv('MINIO_PWD')
     MINIO_VOL_CONFIG = os.getenv('MINIO_VOL_CONFIG')
     MINIO_VOL_OBJECTS = os.getenv('MINIO_VOL_OBJECTS')
-    MINIO_ENDPOINT = "localhost:9000"
+    MINIO_ENDPOINT = os.getenv('MINIO_ENDPOINT') #"localhost:9000"
+
+    FILES_PATH = os.getenv('FILES_PATH')

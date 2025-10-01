@@ -10,7 +10,7 @@ def Load_sale(df):
 
     # Crear conexión
     db = PostgresDB(
-        host="localhost",
+        host=Settings.DB_ENDPOINT,
         dbname=Settings.DB_NAME,
         user=Settings.DB_USER,
         password=Settings.DB_PWD,

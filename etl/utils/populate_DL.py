@@ -17,13 +17,13 @@ def populate_dl(source_folder):
     logger.info("Inicio la transformacion de COLLABORATOR")
 
     # Datos de conexión a MinIO
-    MINIO_ENDPOINT = "localhost:9000"
+    MINIO_ENDPOINT = Settings.MINIO_ENDPOINT #"localhost:9000"
     MINIO_ACCESS_KEY = Settings.MINIO_PWD
     MINIO_SECRET_KEY = Settings.MINIO_PWD
     BUCKET_NAME = constants.BUCKET
 
     # Ruta al folder
-    BASE_PATH = constants.FILES_PATH
+    BASE_PATH = Settings.FILES_PATH
     logger.info("Base path %s", BASE_PATH)
 
     folder_path = os.path.join(BASE_PATH, source_folder).replace("\\", "/")
