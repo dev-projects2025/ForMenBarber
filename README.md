@@ -3,7 +3,7 @@
 
 ![LogoUni](https://www.uao.edu.co/wp-content/uploads/2021/03/reingreso.jpg)
 <div align="justify">
-Nuestro proyecto esta enfocado en implementar un flujo de ETL para consolidar y analizar datos transaccionales de la empresa 🔥For Men Barber Shop!🔥Los datos provienen de archivos XLSX, que contienen los movimientos de ventas y servicios. El Objetivo del proyecto es transformar la información a métricas visuales para la toma de decisiones del negocio usando herramientas tegnologicas como: MinIO, PostgreSQL, Docker, Github, PgAdmin, Drive, Power Bi y Visual Estudio Code (Python).👽
+Nuestro proyecto esta enfocado en implementar un flujo de ETL para consolidar y analizar datos transaccionales de la empresa 🔥For Men Barber Shop!🔥Los datos provienen de archivos XLSX, que contienen los movimientos de ventas y servicios. El Objetivo del proyecto es transformar la información a métricas visuales para la toma de decisiones del negocio usando herramientas tecnológicas como: MinIO, PostgreSQL, Docker, Github, PgAdmin, Drive, Power Bi y Visual Estudio Code (Python).👽
 </div>
 
 ---
