@@ -160,7 +160,7 @@ Para este caso, **FILES_PATH**=C:\Gestion y almacenamiento\ETL\ManBarberShop
 
 ---
 
-## 🗄️ Crear el modelo de DWH en la base de datos
+## 💯 Crear el modelo de DWH en la base de datos
 
 Usando pgadmin, ejecutar el script /Scripts/Script.sql. Esto creará el modelo que soportará el DHW.
 
