@@ -106,11 +106,13 @@ Antes de ejecutar el proyecto, asegúrate de tener instaladas las siguientes her
 
 Definir las variables de entorno en el archivo .env:
 
-🔐 **Variables de entorno MinIO:** Definir las variables de entorno MINIO_USER, MINIO_PWD, MINIO_VOL_CONFIG, MINIO_VOL_OBJECTS
+🔐 **Variables de entorno MinIO:** Definir las variables de entorno MINIO_USER, MINIO_PWD, MINIO_VOL_CONFIG, MINIO_VOL_OBJECTS, MINIO_ENDPOINT
 
-🔐 **Variables de entorno Postgres:** Definir las variables de entorno DB_NAME, DB_USER, DB_PWD, DB_VOL
+🔐 **Variables de entorno Postgres:** Definir las variables de entorno DB_NAME, DB_USER, DB_PWD, DB_VOL, DB_ENDPOINT
 
 🔐 **Variables de entorno Postgres:** Definir las variables de entorno PGADMIN_USER, PGADMIN_PWD, PGADMIN_VOL
+
+🔐 **Variables de entorno Generales:** Definir la variable de entorno FILES_PATH (Ruta donde se tomaran los archivos que se subiran al DataLake)
 
 
 En la raíz del proyecto, ejecutar:
@@ -140,7 +142,22 @@ Los archivos a cargar son los siguientes:
 
 Los archivos deben de estar localizados en una carpeta nombrada de la siguiente manera DDMMYYYY. El proceso de ETL buscará únicamente los archivos dentro de la carpeta del día actual.
 
-Una vez definida la ruta principal de los archivos, se debe de tomar esa ruta y cambiar la constante FILES_PATH en el archivo elt.utils.constants.py
+Se debe de setear en la variable de ambiente FILES_PATH el path anterior.
+
+```plaintext
+Carpeta con los archivos/
+├── 01102025/ # Carpeta de archivos del día formato DDMMYYYY
+│ ├── clientes_FMB.xlsx
+│ ├── Reporte_Colaboradores.xlsx
+│ ├── reporte_general.xlsx
+│ ├── transacciones.xlsx
+```
+
+Ejemplo:
+
+<img width="1077" height="228" alt="Files" src="https://github.com/user-attachments/assets/5062389e-4020-4af5-a141-8a539b22e361" />
+
+Para este caso, **FILES_PATH**=C:\Gestion y almacenamiento\ETL\ManBarberShop
 
 ---
 
@@ -176,7 +193,6 @@ Usando pgadmin, ejecutar el script /Scripts/Script.sql. Esto creará el modelo q
 - `sale_date`
 - `quantity`
 - `total_amount`
-
   
 
 <img width="557" height="585" alt="ERD_Barbershop" src="https://github.com/user-attachments/assets/98808afd-3911-48f6-95ae-fb9550ce9da2" />
