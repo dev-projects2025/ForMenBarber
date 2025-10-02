@@ -205,20 +205,23 @@ Usando pgadmin, ejecutar el script /Scripts/Script.sql. Esto creará el modelo q
 
 ---
 
-
 | OKR | KPI | Conclusión |
 |:----------|:--------:|---------:|
 | Incrementar la ocupación en días de baja demanda| Frecuencia de servicios por Barbero =(Número de servicios realizados)/(Número de barberos x Número de días de servicio)| Permite medir el nivel de ocupación que tiene cada barbero en promedio por cada día laborado. De esta manera, el propietario puede planificar cuantos turnos puede asignar máximos en un día y contemplar la capacidad operativa, exceso de personal o ineficiencia operativa|
 | Mejorar el desempeño individual de cada barbero   | Promedio de atención de servicios Fórmula:(Número de servicios realizados /Número de servicios programados) | Esta formula brinda un panorama del cumplimiento de los servicios realizados vs los planificados. Por lo tanto, si encontramos un valor por encima de 1, se puede concluir como negativo, por qué no se está cumpliendo con la meta esperada por alguna de estas razones: ausencias, citas canceladas o incapacidad operativa. De lo contrario, si encontramos un valor inferior a 1, se percibe que durante la operación, existen servicios que se están realizando sin contar con una programación o cita previa |
 
+###Comportamiento de las ventas en el tiempo
 ---
 <img width="800" height="500" alt="Main_View" src="https://github.com/user-attachments/assets/ff51cff3-7785-48cb-b7a6-31a3a15fa93a" />
 
 ---
+###Desempeño de los barberos
 
 <img width="800" height="500" alt="Barberos_clientes_View" src="https://github.com/user-attachments/assets/95dd0c32-d895-4d5f-89d8-540809d655c6" />
 
 ---
+###Comportamiento de los metodos de pago más usados
+
 <img width="800" height="500" alt="Items_Medios_pago_View" src="https://github.com/user-attachments/assets/5e81ea69-0807-452e-9e62-7880b69d8640" />
 
 ---
