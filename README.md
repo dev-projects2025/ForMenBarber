@@ -195,13 +195,13 @@ Usando pgadmin, ejecutar el script /Scripts/Script.sql. Esto creará el modelo q
 - `total_amount`
   
 
-<img width="557" height="585" alt="ERD_Barbershop" src="https://github.com/user-attachments/assets/98808afd-3911-48f6-95ae-fb9550ce9da2" />
+<img width="800" height="600" alt="ERD_Barbershop" src="https://github.com/user-attachments/assets/98808afd-3911-48f6-95ae-fb9550ce9da2" />
 
 ---
 
 ## 📈 Resultados esperados
 
-<img width="975" height="731" alt="ForMenBarberShop" src="https://github.com/user-attachments/assets/4e9ed340-d3df-4d4a-9242-a9279c8d5b79" />
+<img width="800" height="600" alt="ForMenBarberShop" src="https://github.com/user-attachments/assets/4e9ed340-d3df-4d4a-9242-a9279c8d5b79" />
 
 ---
 
@@ -211,17 +211,18 @@ Usando pgadmin, ejecutar el script /Scripts/Script.sql. Esto creará el modelo q
 | Incrementar la ocupación en días de baja demanda| Frecuencia de servicios por Barbero =(Número de servicios realizados)/(Número de barberos x Número de días de servicio)| Permite medir el nivel de ocupación que tiene cada barbero en promedio por cada día laborado. De esta manera, el propietario puede planificar cuantos turnos puede asignar máximos en un día y contemplar la capacidad operativa, exceso de personal o ineficiencia operativa|
 | Mejorar el desempeño individual de cada barbero   | Promedio de atención de servicios Fórmula:(Número de servicios realizados /Número de servicios programados) | Esta formula brinda un panorama del cumplimiento de los servicios realizados vs los planificados. Por lo tanto, si encontramos un valor por encima de 1, se puede concluir como negativo, por qué no se está cumpliendo con la meta esperada por alguna de estas razones: ausencias, citas canceladas o incapacidad operativa. De lo contrario, si encontramos un valor inferior a 1, se percibe que durante la operación, existen servicios que se están realizando sin contar con una programación o cita previa |
 
-
-<img width="961" height="537" alt="Main_View" src="https://github.com/user-attachments/assets/ff51cff3-7785-48cb-b7a6-31a3a15fa93a" />
-
-
-<img width="947" height="534" alt="Barberos_clientes_View" src="https://github.com/user-attachments/assets/95dd0c32-d895-4d5f-89d8-540809d655c6" />
-
-
-<img width="944" height="535" alt="Items_Medios_pago_View" src="https://github.com/user-attachments/assets/5e81ea69-0807-452e-9e62-7880b69d8640" />
-
+---
+<img width="800" height="500" alt="Main_View" src="https://github.com/user-attachments/assets/ff51cff3-7785-48cb-b7a6-31a3a15fa93a" />
 
 ---
+
+<img width="800" height="500" alt="Barberos_clientes_View" src="https://github.com/user-attachments/assets/95dd0c32-d895-4d5f-89d8-540809d655c6" />
+
+---
+<img width="800" height="500" alt="Items_Medios_pago_View" src="https://github.com/user-attachments/assets/5e81ea69-0807-452e-9e62-7880b69d8640" />
+
+---
+
 
 ## 🛡️ Control de Cambios
 
