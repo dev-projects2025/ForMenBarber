@@ -7,7 +7,7 @@ def Extract_items(source_folder):
     
     logger = Logger('etl.extract.Extract_items').get_logger()
     logger.info("Inicio la extracción de Items")
-    file_name = 'reporte_general_Agosto.xlsx'
+    file_name = 'reporte_general.xlsx'
     df = pd.DataFrame()
     servicios_df = pd.DataFrame()
     productos_df = pd.DataFrame()
